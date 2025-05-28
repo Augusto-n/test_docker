@@ -20,7 +20,13 @@ pytest-cov = "^6.1.1"
 blue = "^0.9.1"
 isort = "^6.0.1"
 taskipy = "^1.14.1"
+fastapi = {extras = ["standard"], version = "^0.115.12"}
 
 [build-system]
 requires = ["poetry-core>=2.0.0,<3.0.0"]
 build-backend = "poetry.core.masonry.api"
+
+[tool.taskipy.tasks]
+run = "fastapi dev src/test_docker/app.py"
+test = "python -m unittest tests/test_*.py"
+lint = "pylint tests taskipy"
