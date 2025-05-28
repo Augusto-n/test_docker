@@ -1,12 +1,18 @@
 FROM python:3.11
 
-WORKDIR /test_docker
+WORKDIR /code
 
-COPY ./pyproject.toml /test_docker/pyproject.toml
+COPY ./pyproject.toml /code/pyproject.toml
+COPY ./poetry.lock /code/poetry.lock
 
-RUN pip install poetry
-RUN poetry install 
 
-COPY ./test_docker /test_docker
+RUN pip install --no-cache-dir poetry
 
-CMD ["poetry", "run", "task", "run"]
+RUN poetry install --no-root --no-interaction --no-ansi
+
+
+COPY ./src /code/src
+
+EXPOSE 8000
+
+CMD ["poetry", "run", "uvicorn", "src.test_docker.app:app", "--host", "0.0.0.0", "--port", "8000"]
